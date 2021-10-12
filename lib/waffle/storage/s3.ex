@@ -255,7 +255,6 @@ defmodule Waffle.Storage.S3 do
       true -> "https://#{bucket_name}.s3.amazonaws.com"
       _ -> "https://s3.amazonaws.com/#{bucket_name}"
     end
-    |> IO.inspect()
   end
 
   defp virtual_host do
