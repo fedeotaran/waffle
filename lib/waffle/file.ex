@@ -28,8 +28,8 @@ defmodule Waffle.File do
       {:ok, local_path} ->
         %Waffle.File{path: local_path, file_name: filename, is_tempfile?: true}
 
-      :error ->
-        {:error, :invalid_file_path}
+      {:error, error} ->
+        {:error, error}
     end
   end
 
@@ -42,7 +42,7 @@ defmodule Waffle.File do
 
     case save_file(uri, filename, definition) do
       {:ok, local_path} -> %Waffle.File{path: local_path, file_name: filename, is_tempfile?: true}
-      :error -> {:error, :invalid_file_path}
+      {:error, error} -> {:error, error}
     end
   end
 
@@ -142,7 +142,8 @@ defmodule Waffle.File do
     case save_temp_file(local_path, uri, definition) do
       {:ok, filename} -> {:ok, local_path, filename}
       :ok -> {:ok, local_path}
-      _ -> :error
+      {:error, error} -> {:error, error}
+      _ -> {:error, :invalid_file_path}
     end
   end
 
