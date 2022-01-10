@@ -220,7 +220,9 @@ defmodule Waffle.Storage.S3 do
     # fallback to default, if neither is present.
     options = put_in(options[:expires_in], options[:expires_in] || @default_expiry_time)
     options = put_in(options[:virtual_host], virtual_host())
-    config = Config.new(:s3, Application.get_all_env(:ex_aws))
+    region = definition.region(file_and_scope)
+    default_config = Application.get_all_env(:ex_aws)
+    config = Config.new(:s3, Keyword.put(default_config, :region, region))
     s3_key = s3_key(definition, version, file_and_scope)
     s3_bucket = s3_bucket(definition, file_and_scope)
     {:ok, url} = S3.presigned_url(config, :get, s3_bucket, s3_key, options)
